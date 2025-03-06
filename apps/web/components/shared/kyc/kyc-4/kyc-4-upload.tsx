@@ -1,25 +1,11 @@
 'use client'
-// import { extractAddress, extractDate } from '@packages/lib/src/doc-utils/extraction'
-// import {
-// 	// handleDrop,
-// 	// handleFileSelect,
-// 	// handleFileUpload,
-// 	// removeFile,
-// } from '@packages/lib/src/doc-utils/uploadHandler'
 import {
-	// handleContinue,
 	validateDocument,
-	// processFile,
 } from '@packages/lib/src/doc-utils/validation'
-import { processFile } from '@packages/lib/src/doc-utils/fileProcessing'
-// import {
-// 	extractAddress,
-// 	extractDate,
-// } from '@packages/lib/src/doc-utils/extraction'
+import { processFile } from '@packages/lib'
 import { AlertCircle } from 'lucide-react'
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
-
 import { Alert, AlertDescription } from '~/components/base/alert'
 import {
 	Card,
@@ -30,7 +16,7 @@ import {
 import { useToast } from '~/components/base/toast'
 import type {
 	DocumentType,
-} from '~/components/shared/kyc/kyc-4/types'
+} from '@packages/lib'
 import { DocumentPreview } from './DocumentPreview'
 import { DocumentTypeSelector } from './DocumentTypeSelector'
 import { ExtractedInfoDisplay } from './ExtractedInfoDisplay'
@@ -79,21 +65,16 @@ const ProofOfAddressUpload = ({
 	}
 	
 	const handleDrop = async (
-		e: React.DragEvent<HTMLDivElement>,
-		documentType: string | null,
-		handleFileUpload: (
-			uploadedFile: File,
-			documentType: string | null,
-			setFile: (file: File | null) => void,
-			toast: (toastProps: any) => void,
-		) => void,
-		setFile: (file: File | null) => void,
-		toast: (toastProps: any) => void,
+		e: React.DragEvent<HTMLLabelElement>,
+		documentType: DocumentType,
+		handleFileUploadBound: (file: File) => void,
+		setFile: React.Dispatch<React.SetStateAction<File | null>>,
+		toast: (props: Omit<ToastType, 'className'>) => () => void,
 	) => {
 		e.preventDefault()
 		const droppedFile = e.dataTransfer.files[0]
 		if (droppedFile && isValidFileType(droppedFile)) {
-			await handleFileUpload(droppedFile, documentType, setFile, toast)
+			await handleFileUpload(documentType, setFile, setPreviewUrl, setIsProcessing, setProgress, setValidationErrors, setExtractedData, toast)
 		}
 	}
 	

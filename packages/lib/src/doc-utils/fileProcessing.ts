@@ -1,12 +1,7 @@
 import { extractAddress, extractDate } from "./extraction";
 import Tesseract from "tesseract.js";
 import { validateDocument } from "./validation";
-
-interface ExtractedData {
-	text: string;
-	date: string | null;
-	address: string | null;
-}
+import type { ExtractedData } from "./types";
 
 interface ProcessFileResult {
 	extractedData: ExtractedData | null;
