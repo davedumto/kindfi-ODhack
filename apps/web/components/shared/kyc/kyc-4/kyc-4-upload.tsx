@@ -1,8 +1,9 @@
 'use client'
 import {
 	validateDocument,
-} from '@packages/lib/src/doc-utils/validation'
-import { processFile } from '@packages/lib'
+	processFile,
+	DocumentType,
+} from '@packages/lib'
 import { AlertCircle } from 'lucide-react'
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
@@ -14,9 +15,6 @@ import {
 	CardTitle,
 } from '~/components/base/card'
 import { useToast } from '~/components/base/toast'
-import type {
-	DocumentType,
-} from '@packages/lib'
 import { DocumentPreview } from './DocumentPreview'
 import { DocumentTypeSelector } from './DocumentTypeSelector'
 import { ExtractedInfoDisplay } from './ExtractedInfoDisplay'
