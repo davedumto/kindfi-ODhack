@@ -1,5 +1,5 @@
 'use client'
-import { processFile } from '@packages/lib'
+import { convertPDFToImage, processFile } from '@packages/lib'
 import * as pdfjsLib from 'pdfjs-dist'
 import { useCallback, useState } from 'react'
 import {
@@ -18,32 +18,32 @@ export function useDocumentProcessor(
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [progress, setProgress] = useState(0)
 
-	const convertPDFToImage = useCallback(async (file: File): Promise<File> => {
-		const arrayBuffer = await file.arrayBuffer()
-		const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
-		const page = await pdf.getPage(1)
-		const viewport = page.getViewport({ scale: 2.0 })
+	// const convertPDFToImage = useCallback(async (file: File): Promise<File> => {
+	// 	const arrayBuffer = await file.arrayBuffer()
+	// 	const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise
+	// 	const page = await pdf.getPage(1)
+	// 	const viewport = page.getViewport({ scale: 2.0 })
 
-		const canvas = document.createElement('canvas')
-		canvas.height = viewport.height
-		canvas.width = viewport.width
+	// 	const canvas = document.createElement('canvas')
+	// 	canvas.height = viewport.height
+	// 	canvas.width = viewport.width
 
-		const context = canvas.getContext('2d')
-		if (!context) throw new Error('Could not create canvas context')
+	// 	const context = canvas.getContext('2d')
+	// 	if (!context) throw new Error('Could not create canvas context')
 
-		await page.render({
-			canvasContext: context,
-			viewport: viewport,
-		}).promise
+	// 	await page.render({
+	// 		canvasContext: context,
+	// 		viewport: viewport,
+	// 	}).promise
 
-		return new Promise((resolve, reject) => {
-			canvas.toBlob((blob) => {
-				if (!blob) reject(new Error('Could not convert PDF to image'))
-				else
-					resolve(new File([blob], 'converted-pdf.png', { type: 'image/png' }))
-			}, 'image/png')
-		})
-	}, [])
+	// 	return new Promise((resolve, reject) => {
+	// 		canvas.toBlob((blob) => {
+	// 			if (!blob) reject(new Error('Could not convert PDF to image'))
+	// 			else
+	// 				resolve(new File([blob], 'converted-pdf.png', { type: 'image/png' }))
+	// 		}, 'image/png')
+	// 	})
+	// }, [])
 
 	const extractText = useCallback(
 		(text: string, pattern: RegExp): string | null => {
@@ -63,7 +63,7 @@ export function useDocumentProcessor(
 					file.type === 'application/pdf' ? await convertPDFToImage(file) : file
 
 				const { extractedData, progress, success, validationErrors } =
-					await processFile(imageToProcess)
+					await processFile(imageToProcess as File)
 				setProgress(progress)
 
 				if (!success) {
