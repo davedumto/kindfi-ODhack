@@ -1,6 +1,6 @@
 'use client'
-import { convertPDFToImage, processFile } from '@packages/lib'
-import * as pdfjsLib from 'pdfjs-dist'
+import { processFile } from '@packages/lib'
+// import * as pdfjsLib from 'pdfjs-dist'
 import { useCallback, useState } from 'react'
 import {
 	DocumentPatterns,
@@ -9,7 +9,7 @@ import {
 	type ToastFunction,
 } from '~/components/shared/kyc/kyc-2/types'
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+// pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
 
 export function useDocumentProcessor(
 	documentType: DocumentType,
@@ -59,11 +59,11 @@ export function useDocumentProcessor(
 			setProgress(0)
 
 			try {
-				const imageToProcess =
-					file.type === 'application/pdf' ? await convertPDFToImage(file) : file
+				// const imageToProcess =
+				// 	file.type === 'application/pdf' ? await convertPDFToImage(file) : file
 
 				const { extractedData, progress, success, validationErrors } =
-					await processFile(imageToProcess as File)
+					await processFile(file)
 				setProgress(progress)
 
 				if (!success) {
@@ -167,13 +167,12 @@ export function useDocumentProcessor(
 				setProgress(0)
 			}
 		},
-		[documentType, convertPDFToImage, extractText, toast],
+		[documentType, extractText, toast],
 	)
 
 	return {
 		isProcessing,
 		progress,
 		processFile: processFileWithType,
-		convertPDFToImage,
 	}
 }

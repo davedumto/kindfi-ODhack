@@ -117,7 +117,6 @@
         "next": "15.1.2",
         "next-themes": "^0.4.4",
         "node-fetch": "^2.7.0",
-        "pdfjs-dist": "^4.10.38",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-dropzone": "^14.3.8",
@@ -148,6 +147,7 @@
       "name": "@packages/lib",
       "version": "0.0.1",
       "dependencies": {
+        "pdfjs-dist": "^4.10.38",
         "tesseract.js": "^6.0.0",
       },
     },
